@@ -1,4 +1,4 @@
-this is a basic frogger like game made in javascript browser-format.
+this is a basic Frogger like game made in javascript browser-format.
 note:( this is still a work in progress ) 
 
 CREDITS:
