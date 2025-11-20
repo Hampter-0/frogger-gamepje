@@ -1,14 +1,15 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const TILE_WIDTH = 101;
-const TILE_HEIGHT = 83;
-const ROWS = 6;
+const TILE_HEIGHT =76;
+const ROWS = 8;
 const COLS = 5;
 let delay = 1;
 
+
 //load enemy image
 const carImage = new Image();
-carImage.src = 'assets/longcar.webp';  // change to your car image path
+carImage.src = 'assets/longcar.webp';  
 
 
 // Load player image
@@ -17,13 +18,13 @@ playerImage.src = 'assets/player.ico';
 
 const player = {
     x: 2 * TILE_WIDTH,
-    y: 5 * TILE_HEIGHT,
+    y: (ROWS - 1) * TILE_HEIGHT,
     width: 50,
     height: 50,
     img: playerImage,
     reset: function() {
         this.x = 2 * TILE_WIDTH;
-        this.y = 5 * TILE_HEIGHT;
+        this.y = (ROWS - 1) * TILE_HEIGHT;
     }
 };
 
@@ -34,7 +35,7 @@ class Enemy {
         this.x = x;
         this.y = y;
         this.width = 70;
-        this.height = 50;
+        this.height = 70;
         this.speed = speed;
         this.img = carImage; // use car image
     }
