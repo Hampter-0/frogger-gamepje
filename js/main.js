@@ -11,12 +11,14 @@ let deathTimer = 0;
 
 //audios
 const moveSound = new Audio('audio/movesound.wav'); // path to your audio file
+const deathSound = new Audio('audio/deathsound.wav'); // your own sound file
 
 
 //automatic map resize
 canvas.width = COLS + 680; // did this so i can fix colliders with the player and right wall
 canvas.height = ROWS * TILE_HEIGHT;
-//assets
+
+//assets loading
 // load skull
 const skullImage = new Image();
 skullImage.src = "assets/skull.png"; // change to your path
@@ -172,8 +174,13 @@ function update(dt) {
             deathY = player.y;
             deathTimer = 5.5; // seconds
 
+
             score = 0;
             scoreEl.textContent = "Score: " + score;
+
+            // play death sound
+            deathSound.currentTime = 0; // reset to start
+            deathSound.play();
         }
 
     });
