@@ -4,12 +4,22 @@ const TILE_WIDTH = 127;
 const TILE_HEIGHT = 76;
 const ROWS = 9;
 const COLS = 6;
-let delay = 1;
+let isDead = false;
+let deathX = 0;
+let deathY = 0;
+let deathTimer = 0;
+
+//audios
+const moveSound = new Audio('audio/movesound.wav'); // path to your audio file
 
 
 //automatic map resize
-canvas.width = COLS +680; // did this so i can fix colliders with the player and right wall
+canvas.width = COLS + 680; // did this so i can fix colliders with the player and right wall
 canvas.height = ROWS * TILE_HEIGHT;
+//assets
+// load skull
+const skullImage = new Image();
+skullImage.src = "assets/skull.png"; // change to your path
 
 //load enemy image
 const carImage = new Image();
@@ -44,6 +54,16 @@ class Enemy {
         this.img = carImage;
     }
     update(dt) {
+        if (isDead) {
+            deathTimer -= dt;
+
+            if (deathTimer <= 0) {
+                isDead = false;
+                player.reset();
+            }
+
+            return; // stop updating enemies during death
+        }
         this.x += this.speed * dt;
 
         // If moving right and goes off screen
@@ -86,28 +106,44 @@ function checkCollision(player, enemy) {
 let score = 0;
 const scoreEl = document.getElementById('score');
 
+
 // movement (Arrow Keys)
 document.addEventListener('keydown', (e) => {
+    if (isDead) return; // 🚫 stop moving during death scene
     switch (e.key) {
 
+
         case 'ArrowUp':
-            if (player.y - TILE_HEIGHT >= 0) //change vertical jump distance
+            if (player.y - TILE_HEIGHT >= 0) { //change vertical jump distance
                 player.y -= TILE_HEIGHT;
+                moveSound.currentTime = 0;
+                moveSound.play();
+            }
             break;
 
         case 'ArrowDown':
-            if (player.y + TILE_HEIGHT < canvas.height) 
+            if (player.y + TILE_HEIGHT < canvas.height) {
                 player.y += TILE_HEIGHT;
+                moveSound.currentTime = 0;
+                moveSound.play();
+            }
             break;
 
+
         case 'ArrowLeft':
-            if (player.x - TILE_WIDTH >= 0) //change horizontal jump distance
+            if (player.x - TILE_WIDTH >= 0) { //change horizontal jump distance
                 player.x -= TILE_WIDTH;
+                moveSound.currentTime = 0;
+                moveSound.play();
+            }
             break;
 
         case 'ArrowRight':
-            if (player.x + TILE_WIDTH < canvas.width) 
+            if (player.x + TILE_WIDTH < canvas.width) {
                 player.x += TILE_WIDTH;
+                moveSound.currentTime = 0;
+                moveSound.play();
+            }
             break;
     }
 });
@@ -130,11 +166,16 @@ function update(dt) {
     enemies.forEach(enemy => {
         enemy.update(dt);
 
-        if (checkCollision(player, enemy)) {
-            player.reset();
+        if (checkCollision(player, enemy) && !isDead) {
+            isDead = true;
+            deathX = player.x;
+            deathY = player.y;
+            deathTimer = 5.5; // seconds
+
             score = 0;
-            scoreEl.textContent = "Score: " + score; // FIXED ✅
+            scoreEl.textContent = "Score: " + score;
         }
+
     });
 
     // check win
@@ -163,7 +204,12 @@ function render() {
     enemies.forEach(enemy => enemy.draw());
 
     // Draw player
-    ctx.drawImage(player.img, player.x, player.y, player.width, player.height);
+    if (isDead) {
+        ctx.drawImage(skullImage, deathX, deathY, player.width, player.height);
+    } else {
+        ctx.drawImage(player.img, player.x, player.y, player.width, player.height);
+    }
+
 
 
 }
