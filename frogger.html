@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frogger</title>
-<style>
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #87CEEB;
-    height: 100vh;
-    margin: 0;
-    font-family: 'mijnfontje', Arial, sans-serif;
-    position: relative;
-  }
-  canvas {
-    background: #222;
-    border: 3px solid #000;
-  }
-  #score {
-    position: absolute;
-    top: 10px;
-    font-size: 20px;
-    color: white;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frogger</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #87CEEB;
+      height: 100vh;
+      margin: 0;
+      font-family: 'mijnfontje', Arial, sans-serif;
+      position: relative;
+    }
 
-@font-face {
-    font-family: 'mijnfontje';
-    src: url('assets/Fonts/OptionA_PressStart2P.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
+    canvas {
+      background: #222;
+      border: 3px solid #000;
+    }
 
-</style>
+    #score {
+      position: absolute;
+      top: 10px;
+      font-size: 20px;
+      color: white;
+    }
+
+    @font-face {
+      font-family: 'mijnfontje';
+      src: url('assets/Fonts/OptionA_PressStart2P.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+  </style>
 </head>
+
 <body>
-<div id="score">Score: 0</div>
-<canvas id="gameCanvas" width="505" height="606"></canvas>
-<script src="js/main.js"></script>
+  <div id="score">Score: 0</div>
+  <canvas id="gameCanvas" ></canvas>
+  <!-- the gamecanvas size is in javascript -->
+  <script src="js/main.js"></script>
 </body>
+
 </html>

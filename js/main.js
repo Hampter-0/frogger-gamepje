@@ -8,7 +8,7 @@ let isDead = false;
 let deathX = 0;
 let deathY = 0;
 let deathTimer = 0;
-
+//made by hampternom bro dit is echt w project trust trust
 //audios
 const moveSound = new Audio('audio/movesound.wav'); // path to your audio file
 const deathSound = new Audio('audio/deathsound.wav'); // your own sound file
@@ -25,21 +25,21 @@ skullImage.src = "assets/skull.png"; // change to your path
 
 //load enemy image
 const carImage = new Image();
-carImage.src = 'assets/longcar.webp';
+carImage.src = 'assets/longcar.png';
 
 
 // Load player image
 const playerImage = new Image();
-playerImage.src = 'assets/player.ico';
+playerImage.src = 'assets/player.png';
 
 const player = {
-    x: 2 * TILE_WIDTH,
-    y: (ROWS - 1) * TILE_HEIGHT,
+    x: 2.0 * TILE_WIDTH, //spawning location 2.5 times tile width is dus de helfd precies in het midden 
+    y: (ROWS - 1) * TILE_HEIGHT, // spawning welke row
     width: 50,
     height: 50,
     img: playerImage,
     reset: function () {
-        this.x = 2 * TILE_WIDTH;
+        this.x = 2.0 * TILE_WIDTH; // wanneer de player dood gaat respawn point
         this.y = (ROWS - 1) * TILE_HEIGHT;
     }
 };
@@ -88,13 +88,16 @@ class Enemy {
 
 // Create enemies
 const enemies = [
-    new Enemy(0, 7 * TILE_HEIGHT, -150), //last number is speed
-    new Enemy(200, 6 * TILE_HEIGHT, 150),// second number is row
+    new Enemy(0, 7 * TILE_HEIGHT, -200), //last number is speed
+    new Enemy(200, 6 * TILE_HEIGHT, 100),// second number is row
     new Enemy(100, 5 * TILE_HEIGHT, -100),// first number is starting position
     new Enemy(300, 3 * TILE_HEIGHT, -250),
-    new Enemy(-100, 2 * TILE_HEIGHT, 100),
+    new Enemy(100, 2 * TILE_HEIGHT, 100),
     new Enemy(200, 1 * TILE_HEIGHT, -200),// to add more cars on the same row duplicate the enemy only change start pos ( distance for the cars on the same row ) for more cars in one row
 ];
+
+//note for my self the jitter from images is caused by the speed( 50 - 150 - 250 ect)
+
 
 // Collision detection
 function checkCollision(player, enemy) {
@@ -111,12 +114,12 @@ const scoreEl = document.getElementById('score');
 
 // movement (Arrow Keys)
 document.addEventListener('keydown', (e) => {
-    if (isDead) return; // 🚫 stop moving during death scene
+    if (isDead) return; // stop bewegen during death scene
     switch (e.key) {
 
 
         case 'ArrowUp':
-            if (player.y - TILE_HEIGHT >= 0) { //change vertical jump distance
+            if (player.y - TILE_HEIGHT >= 0) { //change vertical jump distance current tile height is 76  change tile met minder of meer
                 player.y -= TILE_HEIGHT;
                 moveSound.currentTime = 0;
                 moveSound.play();
@@ -133,7 +136,7 @@ document.addEventListener('keydown', (e) => {
 
 
         case 'ArrowLeft':
-            if (player.x - TILE_WIDTH >= 0) { //change horizontal jump distance
+            if (player.x - TILE_WIDTH >= 0) { //change horizontal jump distance ( current tile width is 127 change tile with met minder of meer)
                 player.x -= TILE_WIDTH;
                 moveSound.currentTime = 0;
                 moveSound.play();
