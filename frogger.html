@@ -24,12 +24,28 @@
 
     #score {
       position: absolute;
-      top: 10px;
+      bottom: 0px;
       font-size: 20px;
       color: white;
+      left: 400px;
     }
 
-    @font-face {
+     #time {
+      position: absolute;
+      bottom: 0px;
+      font-size: 20px;
+      color: white;
+      left: 600px;
+    }
+    #lives {
+      position: absolute;
+      bottom: 0px;
+      font-size: 20px;
+      color: white;
+      left: 800px;
+    }
+
+    @font-face { 
       font-family: 'mijnfontje';
       src: url('assets/Fonts/OptionA_PressStart2P.ttf') format('truetype');
       font-weight: normal;
@@ -40,6 +56,9 @@
 
 <body>
   <div id="score">Score: 0</div>
+  <div id="time"> time: 0</div>
+  <div id="lives"> lives: 3</div>
+
   <canvas id="gameCanvas" ></canvas>
   <!-- the gamecanvas size is in javascript -->
   <script src="js/main.js"></script>

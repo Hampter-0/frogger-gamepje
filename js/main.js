@@ -110,7 +110,10 @@ function checkCollision(player, enemy) {
 // Game state
 let score = 0;
 const scoreEl = document.getElementById('score');
-
+let lives = 3;
+const livesEl = document.getElementById('lives');
+let time = document.getElementById('time');
+const timeEl = document.getElementById('time');
 
 // movement (Arrow Keys)
 document.addEventListener('keydown', (e) => {
@@ -177,16 +180,30 @@ function update(dt) {
             deathY = player.y;
             deathTimer = 5.5; // seconds
 
+            //update lives 
+            if (lives > 0) {
+                lives--;
+                livesEl.textContent = "lives: " + lives;
+            } else {
+                stop();
+            }
 
+            //stop game if run out of lives
+            // time goes down
+
+            //update score
             score = 0;
             scoreEl.textContent = "Score: " + score;
 
             // play death sound
             deathSound.currentTime = 0; // reset to start
             deathSound.play();
+
         }
 
     });
+
+
 
     // check win
     if (player.y <= 0) {
