@@ -8,6 +8,8 @@ let isDead = false;
 let deathX = 0;
 let deathY = 0;
 let deathTimer = 0;
+let gameOver = false;
+
 //made by hampternom bro dit is echt w project trust trust
 //audios
 const moveSound = new Audio('audio/movesound.wav'); // path to your audio file
@@ -171,6 +173,7 @@ function main() {
 }
 //update score and win
 function update(dt) {
+    if (gameOver) return; // stop updating when game is over
     enemies.forEach(enemy => {
         enemy.update(dt);
 
@@ -189,6 +192,10 @@ function update(dt) {
             }
 
             //stop game if run out of lives
+            if (lives === 0) {
+                gameOver = true;
+            }
+            
             // time goes down
 
             //update score
@@ -207,7 +214,7 @@ function update(dt) {
 
     // check win
     if (player.y <= 0) {
-        score++;
+        score+= 10;
         scoreEl.textContent = "Score: " + score;
         player.reset();
     }
