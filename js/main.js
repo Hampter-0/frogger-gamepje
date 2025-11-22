@@ -10,20 +10,21 @@ let deathY = 0;
 let deathTimer = 0;
 let gameOver = false;
 
-//made by hampternom bro dit is echt w project trust trust
+
 //audios
-const moveSound = new Audio('audio/movesound.wav'); // path to your audio file
-const deathSound = new Audio('audio/deathsound.wav'); // your own sound file
+const moveSound = new Audio('audio/movesound.wav');
+const deathSound = new Audio('audio/deathsound.wav');
 
 
 //automatic map resize
 canvas.width = COLS + 680; // did this so i can fix colliders with the player and right wall
 canvas.height = ROWS * TILE_HEIGHT;
+// fix the canvas width bug to make the game wider eventually
 
 //assets loading
 // load skull
 const skullImage = new Image();
-skullImage.src = "assets/skull.png"; // change to your path
+skullImage.src = "assets/skull.png"; 
 
 //load enemy image
 const carImage = new Image();
@@ -35,14 +36,14 @@ const playerImage = new Image();
 playerImage.src = 'assets/player.png';
 
 const player = {
-    x: 2.0 * TILE_WIDTH, //spawning location 2.5 times tile width is dus de helfd precies in het midden 
-    y: (ROWS - 1) * TILE_HEIGHT, // spawning welke row
+    x: 2.0 * TILE_WIDTH, //spawning location
+    y: (ROWS - 1) * TILE_HEIGHT + 12, // spawning welke row
     width: 50,
     height: 50,
     img: playerImage,
     reset: function () {
-        this.x = 2.0 * TILE_WIDTH; // wanneer de player dood gaat respawn point
-        this.y = (ROWS - 1) * TILE_HEIGHT;
+        this.x = 2.0 * TILE_WIDTH; // respawn point
+        this.y = (ROWS - 1) * TILE_HEIGHT + 12; // +12 is for aligning the player vertically on the horizontal rows ( will improve this later)
     }
 };
 
@@ -98,7 +99,7 @@ const enemies = [
     new Enemy(200, 1 * TILE_HEIGHT, -200),// to add more cars on the same row duplicate the enemy only change start pos ( distance for the cars on the same row ) for more cars in one row
 ];
 
-//note for my self the jitter from images is caused by the speed( 50 - 150 - 250 ect)
+//note for my self the jitter from images is caused by the speed( 50 - 150 )
 
 
 // Collision detection
@@ -114,10 +115,10 @@ let score = 0;
 const scoreEl = document.getElementById('score');
 let lives = 3;
 const livesEl = document.getElementById('lives');
-let time = document.getElementById('time');
+let time = 60;
 const timeEl = document.getElementById('time');
 
-// movement (Arrow Keys)
+// movement 
 document.addEventListener('keydown', (e) => {
     if (isDead) return; // stop bewegen during death scene
     switch (e.key) {
@@ -171,9 +172,9 @@ function main() {
     lastTime = now;
     requestAnimationFrame(main);
 }
-//update score and win
+//updates / returns
 function update(dt) {
-    if (gameOver) return; // stop updating when game is over
+    if (gameOver) return; // stop updating when game is over ( een pause basically)
     enemies.forEach(enemy => {
         enemy.update(dt);
 
@@ -181,7 +182,7 @@ function update(dt) {
             isDead = true;
             deathX = player.x;
             deathY = player.y;
-            deathTimer = 5.5; // seconds
+            deathTimer = 5.5; //hoelang het duurt voor respawn
 
             //update lives 
             if (lives > 0) {
@@ -194,13 +195,15 @@ function update(dt) {
             //stop game if run out of lives
             if (lives === 0) {
                 gameOver = true;
+                //update score
+                score = 0;
+                scoreEl.textContent = "Score: " + score;
             }
-            
-            // time goes down
 
-            //update score
-            score = 0;
-            scoreEl.textContent = "Score: " + score;
+
+            // reset game after gameOver 
+
+
 
             // play death sound
             deathSound.currentTime = 0; // reset to start
@@ -212,27 +215,31 @@ function update(dt) {
 
 
 
-    // check win
-    if (player.y <= 0) {
-        score+= 10;
+    // check win score ( will make it so that u get points if u go up a row and get like 100 points if u reach the end)
+    if (player.y <= 15) { //15 is supposed to be 0 but with my add of +12 in the player script he didnt reset to row 1 so this is a quick fix
+        score += 10;
         scoreEl.textContent = "Score: " + score;
         player.reset();
     }
 }
 
 
+ // time goes down
+
+
 //renders
 function render() {
-    // Clear canvas
+    //clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw background tiles
+    // BG tiles ( worden nog veranderd dit is een placeholder)
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {
             ctx.fillStyle = (row === 0) ? '#00BFFF' : (row % 2 === 0 ? '#555' : '#888');
             ctx.fillRect(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
         }
     }
+
 
     // Draw enemies
     enemies.forEach(enemy => enemy.draw());
