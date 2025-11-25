@@ -114,7 +114,7 @@ let score = 0;
 const scoreEl = document.getElementById('score');
 let lives = 3;
 const livesEl = document.getElementById('lives');
-let time = 60;
+let time = 10;
 const timeEl = document.getElementById('time');
 
 // movement 
@@ -165,27 +165,35 @@ function main() {
     let now = Date.now();
     let dt = (now - lastTime) / 1000.0;
 
+
     update(dt);
     render();
 
     lastTime = now;
     requestAnimationFrame(main);
 }
+
+
 //updates / returns
 function update(dt) {
-    if (gameOver) return; // stop updating when game is over ( een pause basically)
+    if (gameOver) return; // stop updating when game is over ( een permenent pause basically)
 
 
-   //make time go down by 1 second 
+    //make time go down by 1 second 
     time -= dt;
 
-    
+
     timeEl.textContent = "Time: " + Math.ceil(time);
 
     // If time runs out
     if (time <= 0) {
         time = 0;
+
+        isDead = true;
         gameOver = true;
+        
+        deathSound.currentTime = 0;
+        deathSound.play();
     }
 
     enemies.forEach(enemy => {
@@ -263,8 +271,10 @@ function render() {
 
     // Draw player
     if (isDead) {
+        console.log("isded");
         ctx.drawImage(skullImage, deathX, deathY, player.width, player.height);
     } else {
+     console.log("isnutded");
         ctx.drawImage(player.img, player.x, player.y, player.width, player.height);
     }
 
