@@ -24,12 +24,11 @@ canvas.height = ROWS * TILE_HEIGHT;
 //assets loading
 // load skull
 const skullImage = new Image();
-skullImage.src = "assets/skull.png"; 
+skullImage.src = "assets/skull.png";
 
 //load enemy image
 const carImage = new Image();
 carImage.src = 'assets/longcar.png';
-
 
 // Load player image
 const playerImage = new Image();
@@ -175,6 +174,20 @@ function main() {
 //updates / returns
 function update(dt) {
     if (gameOver) return; // stop updating when game is over ( een pause basically)
+
+
+   //make time go down by 1 second 
+    time -= dt;
+
+    
+    timeEl.textContent = "Time: " + Math.ceil(time);
+
+    // If time runs out
+    if (time <= 0) {
+        time = 0;
+        gameOver = true;
+    }
+
     enemies.forEach(enemy => {
         enemy.update(dt);
 
@@ -201,7 +214,10 @@ function update(dt) {
             }
 
 
+
+
             // reset game after gameOver 
+
 
 
 
@@ -224,7 +240,8 @@ function update(dt) {
 }
 
 
- // time goes down
+// time goes down
+
 
 
 //renders
@@ -239,7 +256,7 @@ function render() {
             ctx.fillRect(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
         }
     }
-
+    //note for my zelf de canvas moet 1 row kleiner in aseprite en in de game of fix de aseprite canvas 
 
     // Draw enemies
     enemies.forEach(enemy => enemy.draw());
